@@ -13,7 +13,12 @@ jobs:
     steps:
       - name: Checkout to the branch
         uses: actions/checkout@v3
-
+      - name: Debug secrets presence
+        run: |
+          echo "LOGIN length:"
+          echo "${{ secrets.EVO_CR_LOGIN }}" | wc -c
+          echo "PWD length:"
+          echo "${{ secrets.EVO_CR_PWD }}" | wc -c
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
