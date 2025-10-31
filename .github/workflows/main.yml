@@ -13,45 +13,41 @@ jobs:
     steps:
       - name: Checkout to the branch
         uses: actions/checkout@v3
+
       - name: Debug secrets presence
         run: |
           echo "LOGIN length:"
           echo "${{ secrets.EVO_CR_LOGIN }}" | wc -c
           echo "PWD length:"
           echo "${{ secrets.EVO_CR_PWD }}" | wc -c
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
       - name: Log in to Evolution Artifact Registry
         uses: docker/login-action@v1
-              - name: Debug secret lengths
-        run: |
-          echo "User chars:"
-          echo "${{ secrets.EVO_CR_LOGIN }}" | wc -c
-          echo "PWD chars:"
-          echo "${{ secrets.EVO_CR_PWD }}" | wc -c
         with:
           registry: ${{ env.CR_URI }}
           username: ${{ secrets.EVO_CR_LOGIN }}
           password: ${{ secrets.EVO_CR_PWD }}
 
-      - name: .NET - Build and push docker image to Evolution Aritfact Registry
+      - name: .NET - Build and push docker image to Evolution Artifact Registry
         uses: docker/build-push-action@v5
         with:
           push: true
           tags: ${{ env.CR_URI }}/evo-restapidotnet:${{ github.sha }}
           file: ./restapi-dotnet/src/Dockerfile
           context: ./restapi-dotnet/src
-          
-      - name: NodeJS - Build and push docker image to Evolution Aritfact Registry
+
+      - name: NodeJS - Build and push docker image to Evolution Artifact Registry
         uses: docker/build-push-action@v5
         with:
           push: true
           tags: ${{ env.CR_URI }}/evo-restapinodejs:${{ github.sha }}
           file: ./restapi-nodejs/src/Dockerfile
           context: ./restapi-nodejs/src
-          
-      - name: Python - Build and push docker image to Evolution Aritfact Registry
+
+      - name: Python - Build and push docker image to Evolution Artifact Registry
         uses: docker/build-push-action@v5
         with:
           push: true
@@ -59,7 +55,7 @@ jobs:
           file: ./restapi-python/src/Dockerfile
           context: ./restapi-python/src
 
-      - name: Go - Build and push docker image to Evolution Aritfact Registry
+      - name: Go - Build and push docker image to Evolution Artifact Registry
         uses: docker/build-push-action@v5
         with:
           push: true
